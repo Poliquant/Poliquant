@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign up for PoliQuant to access exclusive quantitative analysis and market insights.">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <title>Sign Up - PoliQuant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    /* ==================== CSS Variables ==================== */
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #d4af37;
+      --background-light: #f9f9f9;
+      --text-light: #333;
+      --background-dark: #0a0a0a;
+      --text-dark: #e0e0e0;
+      --transition-speed: 0.3s;
+    }
+
+    /* ==================== General Reset ==================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: var(--background-light);
+      color: var(--text-light);
+      line-height: 1.8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      padding-top: 60px; /* space for fixed top bar */
+    }
+
+    /* ==================== Top Navigation Bar ==================== */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary-color), #1a252f);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .top-bar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      font-family: 'Times New Roman', serif;
+    }
+
+    .top-bar nav a {
+      margin-left: 20px;
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color var(--transition-speed);
+    }
+
+    .top-bar nav a:hover {
+      color: #b08d2b;
+    }
+
+    /* ==================== Signup Container ==================== */
+    .signup-container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .signup-container h2 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .signup-container p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .signup-container a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: color var(--transition-speed);
+    }
+
+    .signup-container a:hover {
+      color: #b08d2b;
+    }
+
+    /* ==================== Form Styles ==================== */
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .signup-form input {
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color var(--transition-speed);
+    }
+
+    .signup-form input:focus {
+      border-color: var(--secondary-color);
+    }
+
+    .signup-form input.invalid {
+      border-color: red;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.9rem;
+      text-align: left;
+      margin-top: 4px;
+      min-height: 1em;
+    }
+
+    .signup-form button {
+      padding: 12px;
+      font-size: 1rem;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color var(--transition-speed), transform 0.2s ease;
+    }
+
+    .signup-form button:hover {
+      background-color: #1a252f;
+      transform: translateY(-2px);
+    }
+
+    .signup-form button:active {
+      transform: translateY(0);
+    }
+
+    /* ==================== Feedback Message ==================== */
+    .form-feedback {
+      font-size: 1rem;
+      margin-top: 10px;
+      text-align: center;
+      min-height: 1.5em;
+    }
+
+    /* ==================== Dark Mode Styles ==================== */
+    body.dark-mode {
+      background-color: var(--background-dark);
+      color: var(--text-dark);
+    }
+
+    body.dark-mode .top-bar {
+      background: linear-gradient(135deg, var(--primary-color), #000);
+    }
+
+    body.dark-mode .signup-container {
+      background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+      color: var(--text-dark);
+    }
+
+    body.dark-mode .signup-form input {
+      background-color: #333;
+      color: var(--text-dark);
+      border-color: #555;
+    }
+
+    body.dark-mode .signup-form input:focus {
+      border-color: var(--secondary-color);
+    }
+
+    body.dark-mode .signup-form button {
+      background-color: var(--secondary-color);
+      color: var(--background-dark);
+    }
+
+    body.dark-mode .signup-form button:hover {
+      background-color: #b08d2b;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <div class="top-bar">
+    <div class="logo">PoliQuant</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <!-- Signup Container -->
+  <div class="signup-container">
+    <h2>Sign Up</h2>
+    <p>Create your PoliQuant account to access exclusive insights and reports.</p>
+    <form class="signup-form" id="signup-form" novalidate>
+      <div>
+        <input type="email" id="email" placeholder="Email" required autocomplete="email">
+        <div class="error-message" id="email-error"></div>
+      </div>
+      <div>
+        <input type="text" id="username" placeholder="Username" required autocomplete="username">
+        <div class="error-message" id="username-error"></div>
+      </div>
+      <div>
+        <input type="password" id="password" placeholder="Password" required autocomplete="new-password">
+        <div class="error-message" id="password-error"></div>
+      </div>
+      <button type="submit" id="signup-btn">Sign Up</button>
+      <div class="form-feedback" id="form-feedback"></div>
+    </form>
+    <p>Already have an account? <a href="login.html">Log In</a></p>
+  </div>
+
+  <!-- Dark Mode Toggle -->
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+  <!-- Frontend "Backend" Simulation & Stripe Payment Flow -->
+  <script>
+    // Dark Mode Toggle functionality
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    // Get form elements
+    const signupForm = document.getElementById('signup-form');
+    const emailInput = document.getElementById('email');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const formFeedback = document.getElementById('form-feedback');
+    const signupBtn = document.getElementById('signup-btn');
+
+    // Basic validation functions
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    function validateForm() {
+      let isValid = true;
+      // Email validation
+      if (!validateEmail(emailInput.value.trim())) {
+        document.getElementById('email-error').textContent = 'Please enter a valid email.';
+        emailInput.classList.add('invalid');
+        isValid = false;
+      } else {
+        document.getElementById('email-error').textContent = '';
+        emailInput.classList.remove('invalid');
+      }
+      // Username validation
+      if (usernameInput.value.trim() === '') {
+        document.getElementById('username-error').textContent = 'Username is required.';
+        usernameInput.classList.add('invalid');
+        isValid = false;
+      } else {
+        document.getElementById('username-error').textContent = '';
+        usernameInput.classList.remove('invalid');
+      }
+      // Password validation: at least 8 characters
+      if (passwordInput.value.length < 8) {
+        document.getElementById('password-error').textContent = 'Password must be at least 8 characters.';
+        passwordInput.classList.add('invalid');
+        isValid = false;
+      } else {
+        document.getElementById('password-error').textContent = '';
+        passwordInput.classList.remove('invalid');
+      }
+      return isValid;
+    }
+
+    // Simulated backend signup function (stores user data locally)
+    function simulateSignup(data) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          // Save signup data to localStorage to simulate a backend user record
+          localStorage.setItem('poliquantUser', JSON.stringify(data));
+          resolve({ success: true });
+        }, 1500);
+      });
+    }
+
+    // Simulated backend function to create a Stripe Checkout session
+    function simulateCreateCheckoutSession(email) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          // Simulate returning a dummy Stripe Checkout session ID
+          resolve({ id: 'dummy_session_id_123' });
+        }, 1000);
+      });
+    }
+
+    // Handle form submission
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      formFeedback.textContent = '';
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Signing Up...';
+
+      if (!validateForm()) {
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Sign Up';
+        return;
+      }
+
+      // Prepare signup data
+      const signupData = {
+        email: emailInput.value.trim(),
+        username: usernameInput.value.trim(),
+        password: passwordInput.value // For demo purposes only
+      };
+
+      try {
+        // Simulate user signup (acting as a backend call)
+        const signupResponse = await simulateSignup(signupData);
+        if (signupResponse.success) {
+          formFeedback.style.color = 'green';
+          formFeedback.textContent = 'Account created! Redirecting to payment...';
+
+          // Simulate creating a Stripe Checkout session on the backend
+          const session = await simulateCreateCheckoutSession(signupData.email);
+
+          // Initialize Stripe.js (using your test publishable key)
+          const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your key if available
+
+          // Instead of calling an actual Stripe checkout, we simulate redirection.
+          // For demonstration, we'll simply redirect to a dummy payment page.
+          // In a real implementation, use:
+          // stripe.redirectToCheckout({ sessionId: session.id });
+          setTimeout(() => {
+            window.location.href = 'payment-success.html';
+          }, 1000);
+        } else {
+          formFeedback.style.color = 'red';
+          formFeedback.textContent = 'Signup failed. Please try again.';
+        }
+      } catch (error) {
+        formFeedback.style.color = 'red';
+        formFeedback.textContent = 'Error: ' + error.message;
+      } finally {
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Sign Up';
+      }
+    });
+  </script>
+</body>
+</html>

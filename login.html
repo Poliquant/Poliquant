@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – PoliQuant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="PoliQuant Logo" />
+    <h1>Log In</h1>
+    <p>Welcome back to the insights hub.</p>
+  </header>
+
+  <section class="hero">
+    <form id="login-form" style="max-width: 400px; margin: auto;">
+      <input type="email" placeholder="Email" required style="width: 100%; padding: 12px; margin-bottom: 15px;" />
+      <input type="password" placeholder="Password" required style="width: 100%; padding: 12px; margin-bottom: 20px;" />
+      <button type="submit">Log In</button>
+    </form>
+    <p style="margin-top: 20px;">Don't have an account? <a href="signup.html">Sign up</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 PoliQuant</p>
+    <a href="index.html">Home</a> | 
+    <a href="tos.html">TOS</a> | 
+    <a href="privacy.html">Privacy</a>
+  </footer>
+
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</button>
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</body>
+</html>
